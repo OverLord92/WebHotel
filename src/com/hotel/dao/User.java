@@ -43,7 +43,9 @@ public class User {
 	private boolean enabled;
 	private String authority;
 	
-	
+	public User(){
+		
+	}
 	
 	
 	public String getUsername() {

@@ -25,7 +25,6 @@ public class RootConfig {
 	@Bean
 	public DataSource dataSource(){
 		DataSource dataSource = null;
-		
 		JndiTemplate jndi = new JndiTemplate();
 		
 		try{
@@ -33,7 +32,6 @@ public class RootConfig {
 		} catch(NamingException ex) {
 			ex.printStackTrace();
 		}
-		
 		return dataSource;
 	}
 	
@@ -42,15 +40,10 @@ public class RootConfig {
 		LocalSessionFactoryBean sessionFactory = 
 				new LocalSessionFactoryBean();
 		sessionFactory.setDataSource(dataSource());
-		sessionFactory.setPackagesToScan(new String[]{ "com.vjezba.beans" });
+		sessionFactory.setPackagesToScan(new String[]{ "com.hotel.dao" });
 		Properties properties = new Properties();
 		properties.setProperty("hibernate.dialect", "org.hibernate.dialect.MySQL5Dialect");
-		properties.setProperty("javax.persistence.validation.group.pre-persist", 
-				"com.postit.validationGroups.PersistenceValidationGroup");
-		properties.setProperty("javax.persistence.validation.group.pre-update", 
-				"com.postit.validationGroups.PersistenceValidationGroup");
-		properties.setProperty("javax.persistence.validation.group.pre-remove", 
-				"com.postit.validationGroups.PersistenceValidationGroup");
+		
 		properties.setProperty("hibernate.hbm2ddl.auto", "create");
 		sessionFactory.setHibernateProperties(properties);
 		
