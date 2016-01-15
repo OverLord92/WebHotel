@@ -7,6 +7,7 @@ import javax.transaction.Transactional;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -50,8 +51,16 @@ public class UserDAO {
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<User> getAllUSers() {
+	public List<User> getAllUsers() {
 		Criteria criteria = session().createCriteria(User.class);
+		return criteria.list();
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<User> searchUsers(String username, String idNumber) {
+		Criteria criteria = session().createCriteria(User.class);
+		criteria.add(Restrictions.like("username", username, MatchMode.ANYWHERE));
+		criteria.add(Restrictions.eq("idNumber", idNumber));
 		return criteria.list();
 	}
 }

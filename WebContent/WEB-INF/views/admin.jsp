@@ -38,6 +38,7 @@
 				<li><a href="#addNewUser">Add new User</a></li>
 				<li><a href="#userRequests">User requests</a></li>
 				<li><a href="#users">Users</a></li>
+				<li><a href="#searchUsers">Search Users</a></li>
 			</ul>
 
 			<div id="addNewUser">
@@ -119,7 +120,7 @@
 					
 					<!-- print service change requests -->
 					<c:if test="${request.type == 'serviceChange'}">
-						<c:url value="/approveserviceChange/${request.id}"
+						<c:url value="/approveServiceChange/${request.id}"
 							var="changeServiceUrl" />
 						<a href="${changeServiceUrl}">odobri promjene servisa korsnika
 							${request.username}</a><br>
@@ -134,7 +135,7 @@
 					<c:if test="${user.enabled == 'true'}">
 						<c:url value="/disableUser/${user.username}" var="disableUserUrl" />
 						<a href="${disableUserUrl}">disejblaj korisnika
-							${user.username}</a><br>
+							${user.username}</a>
 					</c:if>
 					
 					<!-- print disabled users -->
@@ -144,6 +145,10 @@
 					</c:if>
 					<br>
 				</c:forEach>
+			</div>
+			
+			<div id="searchUsers">
+			njesto
 			</div>
 
 		</div>

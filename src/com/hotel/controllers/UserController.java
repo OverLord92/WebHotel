@@ -58,13 +58,20 @@ public class UserController {
 	@RequestMapping(value="/requestRoomChange", method=RequestMethod.POST)
 	public String requestRoomChange(HttpServletRequest servletRequest, Principal principal){
 		
+		String username = principal.getName();
 		String roomType = servletRequest.getParameter("roomType");
 		
-		UserRequest request = new UserRequest();
-		request.setUsername(principal.getName());
+		UserRequest request = requestDAO.doesRoomChangeRequestAllreadyExists(username);
+		
+		if(request == null){
+			request = new UserRequest();
+		}
+		
+		request.setUsername(username);
 		request.setType("roomChange");
 		request.setValue(roomType);
-		requestDAO.createRequest(request);
+		
+		requestDAO.createOrUpdateRequest(request);
 		
 		return "account";
 	}
@@ -72,9 +79,17 @@ public class UserController {
 	@RequestMapping(value="/requestServiceChange", method=RequestMethod.POST)
 	public String requestServiceChange(HttpServletRequest servletRequest, Principal principal){
 		
-		UserRequest request = new UserRequest();
-		
 		String username = principal.getName();
+		
+		// provjeri da li vec postoji rekvest
+		UserRequest request = requestDAO.doesServiceChangeRequestAllreadyExists(username);
+		System.out.println(request);
+		
+		// ako ne postoji napravi novi rekvest
+		if(request == null){
+			request = new UserRequest();
+		}
+		
 		request.setUsername(username);
 		request.setType("serviceChange");
 		
@@ -93,7 +108,7 @@ public class UserController {
 		String sauna = servletRequest.getParameter("sauna");
 		request.setSauna(sauna != null?true:false);
 		
-		requestDAO.createRequest(request);
+		requestDAO.createOrUpdateRequest(request);
 		
 		return "account";
 	}

@@ -2,11 +2,11 @@ Ostalo za napraviti
 
 DONE - pri promjeni sobe napraviti racun za dotadasnje servise/sobu
 
-- forma za pormjenu servisa
-- request za promjenu servisa (ako prije odobravanja starog 
+DONE - forma za pormjenu servisa
+DONE - request za promjenu servisa (ako prije odobravanja starog 
 	nastane novi request, ne praviti novi negoe ditovati stari)
-- odobravanje requesta od strane admina
-- izrada racuna za servise
+DONE - odobravanje requesta od strane admina
+DONE - izrada racuna za servise
 
 - korisnik ima tab bills u kojem moze izlistati racune
 - korisnik zahtjeva ispis racuna
