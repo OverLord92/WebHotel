@@ -1,4 +1,4 @@
-package com.hotel.dao;
+package com.hotel.beans;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -14,6 +14,8 @@ public class Room {
 	
 	@Column(columnDefinition="TINYINT(1)")
 	private boolean occupied;
+	
+	private int roomPrice;
 	
 	
 
@@ -40,8 +42,21 @@ public class Room {
 	public void setOccupied(boolean occupied) {
 		this.occupied = occupied;
 	}
+
+	public int getRoomPrice() {
+		return roomPrice;
+	}
+
+	public void setRoomPrice(int roomPrice) {
+		this.roomPrice = roomPrice;
+	}
+
+	@Override
+	public String toString() {
+		return "Room [roomNumber=" + roomNumber + ", roomType=" + roomType + ", occupied=" + occupied + ", roomPrice="
+				+ roomPrice + "]";
+	}
 	
-	 
 	
 	
 }

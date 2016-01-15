@@ -1,7 +1,5 @@
-package com.hotel.dao;
+package com.hotel.beans;
 
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Date;
 
 import javax.persistence.CascadeType;
@@ -9,9 +7,6 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Transient;
 
@@ -22,7 +17,7 @@ public class User {
 	private String username;
 	
 	@Transient
-	private String password;   /// ovo polje cemo koristiti samo za validaciju passworda
+	private String password; 
 	
 	@Column(name="password")   
 	private String encodedPassword;
@@ -37,11 +32,11 @@ public class User {
 	@JoinColumn(name="roomNumber")
 	private Room room;
 	
-	@ManyToMany
-	private Collection<Service> services = new ArrayList<>();
+	@OneToOne(cascade=CascadeType.ALL)
+	private Services services;
 	
 	private Date checkInDate;
-	private boolean online; // pomocu ovog polja ce admin provjeravati da li je user online
+	private boolean online; 
 	
 	@Column(columnDefinition="TINYINT(1)")
 	private boolean enabled;
@@ -50,8 +45,8 @@ public class User {
 	// pri svakom koristenju servisa dodajemo novi bill u listu
 	// sto je jos bitnije u slucaju promjene sobe moramo naplatiti
 	// dotadasnji smjestaj u staroj sobi
-	@OneToMany(mappedBy="user")
-	private Collection<Bill> bills = new ArrayList<>();
+//	@OneToMany(mappedBy="user", fetch=FetchType.EAGER)
+//	private Collection<Bill> bills = new ArrayList<>();
 	
 
 	
@@ -128,11 +123,11 @@ public class User {
 		this.room = room;
 	}
 
-	public Collection<Service> getServices() {
+	public Services getServices() {
 		return services;
 	}
 
-	public void setServices(Collection<Service> services) {
+	public void setServices(Services services) {
 		this.services = services;
 	}
 
@@ -167,14 +162,25 @@ public class User {
 	public void setAuthority(String authority) {
 		this.authority = authority;
 	}
+	
+//	public Collection<Bill> getBills() {
+//		return bills;
+//	}
+//
+//	public void setBills(Collection<Bill> bills) {
+//		this.bills = bills;
+//	}
 
-	public Collection<Bill> getBills() {
-		return bills;
-	}
 
-	public void setBills(Collection<Bill> bills) {
-		this.bills = bills;
+	@Override
+	public String toString() {
+		return "User [username=" + username + ", password=" + password + ", encodedPassword=" + encodedPassword
+				+ ", name=" + name + ", lastName=" + lastName + ", idNumber=" + idNumber + ", dob=" + dob + ", gender="
+				+ gender + ", room=" + room + ", checkInDate=" + checkInDate + ", online=" + online + ", enabled="
+				+ enabled + ", authority=" + authority + "]";
 	}
+	
+	
 	
 	
 }

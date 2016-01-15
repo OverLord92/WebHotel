@@ -10,9 +10,11 @@ import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.hotel.beans.UserRequest;
+
 @Transactional
 @Service
-public class ServiceDAO {  
+public class RequestDAO {
 
 	@Autowired
 	private SessionFactory sessionFactory;
@@ -21,15 +23,22 @@ public class ServiceDAO {
 		return sessionFactory.getCurrentSession();
 	}
 	
+	public void createRequest(UserRequest request){
+		session().save(request);
+	}
+	
 	@SuppressWarnings("unchecked")
-	public List<com.hotel.beans.Services> getAllServices(){
-		Criteria criteria = session().createCriteria(com.hotel.beans.Services.class);
+	public List<UserRequest> getAllRequests(){
+		Criteria criteria = session().createCriteria(UserRequest.class);
 		return criteria.list();
 	}
 
-	public void createService(com.hotel.beans.Services service) {
-		session().save(service);
+	public UserRequest getRequest(int requestId) {
+		return (UserRequest)session().get(UserRequest.class, requestId);
 	}
-	
+
+	public void deleteRequest(UserRequest request) {
+		session().delete(request);
+	}
 	
 }

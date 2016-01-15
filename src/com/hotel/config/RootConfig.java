@@ -40,11 +40,11 @@ public class RootConfig {
 		LocalSessionFactoryBean sessionFactory = 
 				new LocalSessionFactoryBean();
 		sessionFactory.setDataSource(dataSource());
-		sessionFactory.setPackagesToScan(new String[]{ "com.hotel.dao" });
+		sessionFactory.setPackagesToScan(new String[]{ "com.hotel.beans" });
 		Properties properties = new Properties();
 		properties.setProperty("hibernate.dialect", "org.hibernate.dialect.MySQL5Dialect");
 		
-		properties.setProperty("hibernate.hbm2ddl.auto", "create");
+		properties.setProperty("hibernate.hbm2ddl.auto", "update");
 		sessionFactory.setHibernateProperties(properties);
 		
 		return sessionFactory;

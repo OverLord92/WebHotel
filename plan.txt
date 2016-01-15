@@ -1,0 +1,24 @@
+Ostalo za napraviti
+
+- pri promjeni sobe napraviti racun za dotadasnje servise/sobu
+
+- forma za pormjenu servisa
+- request za promjenu servisa (ako prije odobravanja starog 
+	nastane novi request, ne praviti novi negoe ditovati stari)
+- odobravanje requesta od strane admina
+- izrada racuna za servise
+
+- korisnik ima rab bills u kojem moze izlistati racune
+- korisnik zahtjeva ispis racuna
+- admin treba da po zahtjevu korisnika napravi racun
+
+- korisnik zahtjeva odjavu
+- admin odobrava odjavu i pravi racun (admin moze odjaviti 
+	bez requesta)
+
+- napraviti tab search u kojem admin moze pretraziati korisnike 
+	po usernameu i id-u
+
+- klasa bill: username, startDate, endDate, sve boolean 
+	services i roomType, payed
+
