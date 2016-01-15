@@ -109,12 +109,20 @@
 			<div id="userRequests">
 
 				<c:forEach items="${requests}" var="request">
-					<!-- print register requests -->
+					<!-- print room change requests -->
 					<c:if test="${request.type == 'roomChange'}">
 						<c:url value="/approveRoomChange/${request.id}"
 							var="changeRoomUrl" />
 						<a href="${changeRoomUrl}">odobri premjestanje korisnika u drugu sobu
-							${request.username}</a>
+							${request.username}</a><br>
+					</c:if>
+					
+					<!-- print service change requests -->
+					<c:if test="${request.type == 'serviceChange'}">
+						<c:url value="/approveserviceChange/${request.id}"
+							var="changeServiceUrl" />
+						<a href="${changeServiceUrl}">odobri promjene servisa korsnika
+							${request.username}</a><br>
 					</c:if>
 				</c:forEach>
 
@@ -126,9 +134,9 @@
 					<c:if test="${user.enabled == 'true'}">
 						<c:url value="/disableUser/${user.username}" var="disableUserUrl" />
 						<a href="${disableUserUrl}">disejblaj korisnika
-							${user.username}</a>
+							${user.username}</a><br>
 					</c:if>
-					<br>
+					
 					<!-- print disabled users -->
 					<c:if test="${user.enabled == 'false'}">
 						<c:url value="/enableUser/${user.username}" var="enableUserUrl" />

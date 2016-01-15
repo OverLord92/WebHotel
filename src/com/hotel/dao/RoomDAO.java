@@ -28,7 +28,7 @@ public class RoomDAO {
 		criteria.add(Restrictions.eq("occupied", false));
 		criteria.add(Restrictions.eq("roomType", roomType));
 	
-		Room room = (Room)criteria.uniqueResult();
+		Room room = (Room)criteria.list().get(0); // treba hendlati nullpointer
 	
 		System.out.println(room);
 		

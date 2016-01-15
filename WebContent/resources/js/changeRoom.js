@@ -29,10 +29,10 @@ $(document).ready(function(){
 	function success(data) {
 		if(data.room != null){
 			$('#roomStatus').text('A room is available. Click Send request to request transer.');
-			$('#submitRequest').prop('disabled', false);
+			$('#submitRoomRequest').prop('disabled', false);
 		} else {
 			$('#roomStatus').text('No such room available at the moment.');
-			$('#submitRequest').prop('disabled', true);
+			$('#submitRoomRequest').prop('disabled', true);
 		}
 	}
 	

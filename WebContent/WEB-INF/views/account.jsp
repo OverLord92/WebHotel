@@ -26,19 +26,47 @@
 			<label for="roomType">New Room Type:</label>
 			<input type="text" id="roomType" name="roomType" />
 			<span id="roomStatus"></span>
-			<input type="submit" id="submitRequest" value="Send request" />
+			<input type="submit" id="submitRoomRequest" value="Send request" />
 		</div>
 	</form>
 	</div>
 	
 	<div class="container">
-		<!-- print register requests -->
-		<c:if test="${request.type == 'roomChange'}">
-			<c:url value="/approveRoomChange/${request.id}"
-				var="changeRoomUrl" />
-			<a href="${changeRoomUrl}">odobri premjestanje korisnika u drugu sobu
-				${request.username}</a>
-		</c:if>
+		<spring:url value="/requestServiceChange" var="changeServiceUrl" />
+		<form action="${changeServiceUrl}" method="POST">
+		<h3>Request a change of services</h3>
+		<div class="checkbox">
+  					<label>
+    					<input type="checkbox" value="gym" name="gym">
+    					Teretana
+  						</label>
+					</div>
+					<div class="checkbox">
+  					<label>
+    					<input type="checkbox" value="cinema" name="cinema">
+    					Kino
+  						</label>
+					</div>
+					<div class="checkbox">
+  					<label>
+    					<input type="checkbox" value="restaurant" name="restaurant">
+    					Restoran
+  						</label>
+					</div>
+					<div class="checkbox">
+  					<label>
+    					<input type="checkbox" value="pool" name="pool">
+    					Bazen
+  						</label>
+					</div>
+					<div class="checkbox">
+  					<label>
+    					<input type="checkbox" value="sauna" name="sauna">
+    					Sauna
+  						</label>
+					</div>
+					<input type="submit" id="submitServiceRequest" value="Send request" />
+			</form>
 	</div>
 </body>
 </html>

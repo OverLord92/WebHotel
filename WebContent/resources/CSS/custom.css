@@ -1,0 +1,44 @@
+@CHARSET "UTF-8";
+
+body {
+		
+}
+
+.editPostitRow {
+		display: none;
+}
+
+label {
+	font-size: 15px;
+}
+
+.help-block {
+	font-weight: normal;
+	font-size: 13px;
+}
+
+p {
+	font-size: medium;
+}
+
+#sendSuccess {
+	color: #3BDB59;
+	font-size: medium;
+}
+
+a {
+	margin-left: 20px;
+}
+
+.error {
+	color: #F23A22;
+}
+
+#td_button{
+	width: 50px;
+}
+
+textarea {
+	width: 200px;
+}
+

@@ -1,6 +1,8 @@
 package com.hotel.controllers;
 
+import java.security.Principal;
 import java.text.ParseException;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.hotel.beans.Bill;
 import com.hotel.beans.User;
 import com.hotel.beans.UserRequest;
 import com.hotel.dao.RequestDAO;
@@ -30,9 +33,9 @@ public class UserController {
 	
 	
 	@RequestMapping("/account")
-	public String showUserAcccount(Model model){ //Principal principal){ kad se sredi security ide ovo
-		User user = userDAO.getUser("senjin");
+	public String showUserAcccount(Model model, Principal principal){
 		
+		User user = userDAO.getUser(principal.getName());
 		model.addAttribute("user", user);
 		
 		return "account";
@@ -53,16 +56,43 @@ public class UserController {
 	}
 	
 	@RequestMapping(value="/requestRoomChange", method=RequestMethod.POST)
-	public String requestRoomChange(HttpServletRequest servletRequest){  //Principal principal){ kad sredim security koristicu principal
-		// cu hardkovati
+	public String requestRoomChange(HttpServletRequest servletRequest, Principal principal){
 		
-		//String username = principal.getName();
 		String roomType = servletRequest.getParameter("roomType");
 		
 		UserRequest request = new UserRequest();
-		request.setUsername("senjin");
+		request.setUsername(principal.getName());
 		request.setType("roomChange");
 		request.setValue(roomType);
+		requestDAO.createRequest(request);
+		
+		return "account";
+	}
+	
+	@RequestMapping(value="/requestServiceChange", method=RequestMethod.POST)
+	public String requestServiceChange(HttpServletRequest servletRequest, Principal principal){
+		
+		UserRequest request = new UserRequest();
+		
+		String username = principal.getName();
+		request.setUsername(username);
+		request.setType("serviceChange");
+		
+		String gym = servletRequest.getParameter("gym");
+		request.setGym(gym != null?true:false);
+		
+		String cinema = servletRequest.getParameter("cinema");
+		request.setCinema(cinema != null?true:false);
+		
+		String restaurant = servletRequest.getParameter("restaurant");
+		request.setRestaurant(restaurant != null?true:false);
+		
+		String pool = servletRequest.getParameter("pool");
+		request.setPool(pool != null?true:false);
+		
+		String sauna = servletRequest.getParameter("sauna");
+		request.setSauna(sauna != null?true:false);
+		
 		requestDAO.createRequest(request);
 		
 		return "account";

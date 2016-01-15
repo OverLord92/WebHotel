@@ -37,7 +37,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		http.csrf().disable();
 		http
 				.authorizeRequests()
-				.antMatchers("/home").access("isAuthenticated()")
+				.antMatchers("/account").access("isAuthenticated()")
 			.and()
 				.formLogin()
 				.defaultSuccessUrl("/successfulLogin")

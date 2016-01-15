@@ -1,12 +1,17 @@
 package com.hotel.beans;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Transient;
 
@@ -45,8 +50,8 @@ public class User {
 	// pri svakom koristenju servisa dodajemo novi bill u listu
 	// sto je jos bitnije u slucaju promjene sobe moramo naplatiti
 	// dotadasnji smjestaj u staroj sobi
-//	@OneToMany(mappedBy="user", fetch=FetchType.EAGER)
-//	private Collection<Bill> bills = new ArrayList<>();
+	@OneToMany(mappedBy="username", fetch=FetchType.EAGER, cascade=CascadeType.ALL)
+	private List<Bill> bills = new ArrayList<>();
 	
 
 	
@@ -163,14 +168,17 @@ public class User {
 		this.authority = authority;
 	}
 	
-//	public Collection<Bill> getBills() {
-//		return bills;
-//	}
-//
-//	public void setBills(Collection<Bill> bills) {
-//		this.bills = bills;
-//	}
+	public List<Bill> getBills() {
+		return bills;
+	}
 
+	public void setBills(List<Bill> bills) {
+		this.bills = bills;
+	}
+
+	public Bill getLastBill(){
+		return this.bills.get(bills.size() - 1);
+	}
 
 	@Override
 	public String toString() {

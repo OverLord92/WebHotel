@@ -34,4 +34,108 @@ public class Bill {
 	@Column(columnDefinition="TINYINT(1)")
 	private boolean payed;
 	
+	
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	public String getUsername() {
+		return username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
+	}
+
+	public Date getStartDate() {
+		return startDate;
+	}
+
+	public void setStartDate(Date startDate) {
+		this.startDate = startDate;
+	}
+
+	public Date getEndDate() {
+		return endDate;
+	}
+
+	public void setEndDate(Date endDate) {
+		this.endDate = endDate;
+	}
+
+	public boolean isGym() {
+		return gym;
+	}
+
+	public void setGym(boolean gym) {
+		this.gym = gym;
+	}
+
+	public boolean isCinema() {
+		return cinema;
+	}
+
+	public void setCinema(boolean cinema) {
+		this.cinema = cinema;
+	}
+
+	public boolean isRestaurant() {
+		return restaurant;
+	}
+
+	public void setRestaurant(boolean restaurant) {
+		this.restaurant = restaurant;
+	}
+
+	public boolean isPool() {
+		return pool;
+	}
+
+	public void setPool(boolean pool) {
+		this.pool = pool;
+	}
+
+	public boolean isSauna() {
+		return sauna;
+	}
+
+	public void setSauna(boolean sauna) {
+		this.sauna = sauna;
+	}
+
+	public String getRoomType() {
+		return roomType;
+	}
+
+	public void setRoomType(String roomType) {
+		this.roomType = roomType;
+	}
+
+	public boolean isPayed() {
+		return payed;
+	}
+
+	public void setPayed(boolean payed) {
+		this.payed = payed;
+	}
+	
+	public Bill copyBill(){
+		Bill copy = new Bill();
+		copy.username = this.username;
+		copy.gym = this.gym;
+		copy.cinema = this.cinema;
+		copy.restaurant = this.restaurant;
+		copy.pool = this.pool;
+		copy.sauna = this.sauna;
+		
+		return copy;
+	}
+	
+	
+	
 }
