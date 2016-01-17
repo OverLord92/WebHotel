@@ -22,3 +22,4 @@ DONE - izrada racuna za servise
 DONE - klasa bill: username, startDate, endDate, sve boolean 
 	services i roomType, payed
 
+Poy senjinnn lets try merging forks!
