@@ -127,6 +127,22 @@
 						<a href="${changeServiceUrl}">odobri promjene servisa korsnika
 							${request.username}</a><br>
 					</c:if>
+					
+					<!-- print logout requests -->
+					<c:if test="${request.type == 'logOut'}">
+						<c:url value="/approveLogOut/${request.id}"
+							var="logOutUrl" />
+						<a href="${logOutUrl}">odobri logout korsnika
+							${request.username}</a><br>
+					</c:if>
+					
+					<!-- print logout requests -->
+					<c:if test="${request.type == 'charge'}">
+						<c:url value="/charge/${request.id}"
+							var="chargeUrl" />
+						<a href="${chargeUrl}">naplati korisniku 
+							${request.username} iznos ${request.value}</a><br>
+					</c:if>
 				</c:forEach>
 
 			</div>

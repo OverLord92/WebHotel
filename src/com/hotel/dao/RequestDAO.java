@@ -67,5 +67,13 @@ public class RequestDAO {
 	public void createOrUpdateRequest(UserRequest request) {
 		session().saveOrUpdate(request);
 	}
-	
+
+	public UserRequest doesLogOutRequestAllreadyExists(String username) {
+		Criteria criteria = session().createCriteria(UserRequest.class);
+		criteria.add(Restrictions.eq("username", username));
+		criteria.add(Restrictions.eq("type", "logOut"));
+		
+		return (UserRequest)criteria.uniqueResult();
+	}
+
 }

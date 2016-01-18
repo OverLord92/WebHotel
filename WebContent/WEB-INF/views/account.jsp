@@ -172,8 +172,13 @@
 	<div class="container">
 		<h4>Excluding the last bill you need to pay: ${user.totalAmountToPay}</h4>
 	<br><br>
-	<spring:url value="/requestLogOut" var="requestLogOut" />
-	<button onclick="requestLogOut">Request LogOut</button>
+	
+	<h3>Request log out from the System</h3>
+	<spring:url value="/requestLogOut" var="requestLogOutUrl" />
+	<form action="${requestLogOutUrl}" method="POST">
+		<input type="submit" value="Request LogOut" />
+	</form>
+	
 	<br><br>
 	</div>
 </body>

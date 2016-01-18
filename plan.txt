@@ -12,9 +12,9 @@ DONE - korisnik ima tab bills u kojem moze izlistati racune
 DONE - korisnik zahtjeva ispis racuna
 DONE - admin treba da po zahtjevu korisnika napravi racun
 
-- korisnik zahtjeva odjavu														// admin prekida zadnji racun
+DONE - korisnik zahtjeva odjavu													// admin prekida zadnji racun
 - admin odobrava odjavu i pravi racun (admin moze odjaviti 						// ispisuje koliko je ukupno duzan korisnik
-	bez requesta)																// potvrdjuje da su racuni place ni i setuje user na enabled
+	bez requesta)																// potvrdjuje da su racuni place ni i user user na disabled
 	
 
 DONE - napraviti tab search u kojem admin moze pretraziati korisnike 

@@ -123,7 +123,6 @@ public class AdminController {
 		
 		// promjeni sobu
 		Room oldRoom = user.getRoom();
-		System.out.println("old room" + oldRoom);
 		Room newRoom = roomDAO.getRoomOfCertainType(requestedRoomType);
 		
 		if(newRoom !=null) {
@@ -153,7 +152,6 @@ public class AdminController {
 	@RequestMapping("/approveServiceChange/{requestId}")
 	public String changeUserService(@PathVariable Integer requestId){
 	
-		System.out.println(requestId);
 		UserRequest request = requestDAO.getRequest(requestId);
 
 		String username = request.getUsername();
@@ -211,7 +209,6 @@ public class AdminController {
 			services.setSauna(false);
 		}
 		
-		System.out.println(services);
 		user.setServices(services);
 		user.getBills().add(newBill);
 		userDAO.updateUser(user);
@@ -220,16 +217,48 @@ public class AdminController {
 		return "redirect:/admin";
 	}
 	
+	@RequestMapping("/approveLogOut/{requestId}")
+	public String logOutUser(@PathVariable Integer requestId){
+		UserRequest request = requestDAO.getRequest(requestId);
+		
+		String username = request.getUsername();
+		User user = userDAO.getUser(username);
+		
+		Bill lastBill = user.getLastBill();
+		lastBill.setEndDate(new Date());
+		user.addToTotalAmount(lastBill.calculateTotalForThisBill());
+		
+		Room room = user.getRoom();
+		room.setOccupied(false);
+		roomDAO.updateRoom(room);
+		
+		user.setRoom(null);
+		userDAO.updateUser(user);		
+		request.setType("charge");
+		request.setValue(user.getTotalAmountToPay() + "");
+		requestDAO.updateRequest(request);
+		return "redirect:/admin";
+	}
 	
+	@RequestMapping("/charge/{requestId}")
+	public String chargeAndDisableUser(@PathVariable Integer requestId){
+		UserRequest request = requestDAO.getRequest(requestId);
+		
+		String username = request.getUsername();
+		User user = userDAO.getUser(username);
+		
+		user.setTotalAmountToPay(0);
+		user.setEnabled(false);
+		userDAO.updateUser(user);
+		requestDAO.deleteRequest(request);
+		return "redirect:/admin";
+	}
 	
 	
 	@RequestMapping("/enableUser/{username}")
 	public String enableUser(@PathVariable String username){
 		
 		User user = userDAO.getUser(username);
-		
-		System.out.println(user);
-	
 		user.setEnabled(true);
 		
 		userDAO.updateUser(user);
@@ -242,7 +271,6 @@ public class AdminController {
 		
 		User user = userDAO.getUser(username);
 		
-		System.out.println(user);
 		if(user.getRoom() == null){
 			user.setEnabled(false);
 			userDAO.updateUser(user);
@@ -254,9 +282,6 @@ public class AdminController {
 	@RequestMapping(value = "searchUsers", method = RequestMethod.POST, consumes = "application/json", produces = "application/json")
 	public @ResponseBody Map<String, Object> addPostit(@RequestBody Map<String, Object> data){
 
-		
-		System.out.println("pozvana metoda za search");
-		
 		String username = (String)data.get("username");
 		String idNumber = (String)data.get("idNumber");
 		
