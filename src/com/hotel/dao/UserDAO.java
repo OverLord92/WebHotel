@@ -55,6 +55,7 @@ public class UserDAO {
 	@SuppressWarnings("unchecked")
 	public List<User> getAllUsers() {
 		Criteria criteria = session().createCriteria(User.class);
+		System.out.println(criteria.list().size());
 		return criteria.list();
 	}
 

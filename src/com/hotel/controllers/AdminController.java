@@ -43,6 +43,7 @@ public class AdminController {
 		model.addAttribute("user", new User());
 		model.addAttribute("requests", requestDAO.getAllRequests());
 		model.addAttribute("users", userDAO.getAllUsers());
+		System.out.println("number of users is:" + userDAO.getAllUsers().size());
 		return "admin";
 	}
 	
@@ -112,8 +113,11 @@ public class AdminController {
 		// prekini prosli racun
 		Bill oldBill = user.getLastBill();
 		oldBill.setEndDate(new Date());
-		int daysUsed = UtilitiMethods.getDateDiff(oldBill.getStartDate(), oldBill.getEndDate());
+		int daysUsed = UtilitiMethods.getDateDiff(oldBill.getStartDate(), oldBill.getEndDate()) + 1;
 		oldBill.setNumberOfDays(daysUsed);
+		int total = oldBill.calculateTotalForThisBill();
+		oldBill.setTotal(total);
+		user.addToTotalAmount(total);
 							
 		String requestedRoomType = request.getValue();
 		
@@ -161,6 +165,9 @@ public class AdminController {
 		oldBill.setEndDate(new Date());
 		int daysUsed = UtilitiMethods.getDateDiff(oldBill.getStartDate(), oldBill.getEndDate()) + 1;
 		oldBill.setNumberOfDays(daysUsed);
+		int total = oldBill.calculateTotalForThisBill();
+		oldBill.setTotal(total);
+		user.addToTotalAmount(total);
 							
 		Services services = user.getServices();
 		Bill newBill = new Bill();

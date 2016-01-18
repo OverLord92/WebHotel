@@ -8,13 +8,14 @@ DONE - request za promjenu servisa (ako prije odobravanja starog
 DONE - odobravanje requesta od strane admina
 DONE - izrada racuna za servise
 
-- korisnik ima tab bills u kojem moze izlistati racune
-- korisnik zahtjeva ispis racuna
-- admin treba da po zahtjevu korisnika napravi racun
+DONE - korisnik ima tab bills u kojem moze izlistati racune
+DONE - korisnik zahtjeva ispis racuna
+DONE - admin treba da po zahtjevu korisnika napravi racun
 
-- korisnik zahtjeva odjavu
-- admin odobrava odjavu i pravi racun (admin moze odjaviti 
-	bez requesta)
+- korisnik zahtjeva odjavu														// admin prekida zadnji racun
+- admin odobrava odjavu i pravi racun (admin moze odjaviti 						// ispisuje koliko je ukupno duzan korisnik
+	bez requesta)																// potvrdjuje da su racuni place ni i setuje user na enabled
+	
 
 DONE - napraviti tab search u kojem admin moze pretraziati korisnike 
 	po usernameu i id-u

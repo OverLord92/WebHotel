@@ -7,6 +7,14 @@ import javax.persistence.Id;
 @Entity
 public class Room {
 	
+	public static final String ONE_BED = "one";
+	public static final String TWO_BED = "two";
+	public static final String APARTMENT = "apartment";
+	
+	public static final int ONE_BED_PRICE = 20;
+	public static final int TWO_BED_PRICE = 40;
+	public static final int APARTMENT_PRICE = 60;
+	
 	@Id
 	private int roomNumber;
 	

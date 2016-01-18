@@ -10,6 +10,12 @@ import javax.persistence.Id;
 
 @Entity
 public class Bill {
+	
+	public static final int GYM_PRICE = 10;
+	public static final int CINEMA_PRICE = 10;
+	public static final int RESTAURANT_PRICE = 20;
+	public static final int POOL_PRICE = 10;
+	public static final int SAUNA_PRICE = 10;
 
 	@Id @GeneratedValue(strategy=GenerationType.TABLE)
 	private int id;
@@ -34,10 +40,32 @@ public class Bill {
 	
 	private String roomType;
 	
+	private int total;
+	
 	@Column(columnDefinition="TINYINT(1)")
 	private boolean payed;
 	
 	
+
+	public static int getGymPrice() {
+		return GYM_PRICE;
+	}
+
+	public static int getCinemaPrice() {
+		return CINEMA_PRICE;
+	}
+
+	public static int getRestaurantPrice() {
+		return RESTAURANT_PRICE;
+	}
+
+	public static int getPoolPrice() {
+		return POOL_PRICE;
+	}
+
+	public static int getSaunaPrice() {
+		return SAUNA_PRICE;
+	}
 
 	public int getId() {
 		return id;
@@ -126,6 +154,14 @@ public class Bill {
 	public void setRoomType(String roomType) {
 		this.roomType = roomType;
 	}
+	
+	public int getTotal() {
+		return total;
+	}
+
+	public void setTotal(int total) {
+		this.total = total;
+	}
 
 	public boolean isPayed() {
 		return payed;
@@ -133,6 +169,32 @@ public class Bill {
 
 	public void setPayed(boolean payed) {
 		this.payed = payed;
+	}
+	
+	public int calculateTotalForThisBill(){
+		int total = 0;
+		
+		if(gym)
+		total += numberOfDays * GYM_PRICE;
+		if(cinema)
+			total += numberOfDays * CINEMA_PRICE;
+		if(restaurant)
+			total += numberOfDays * RESTAURANT_PRICE;
+		if(pool)
+			total += numberOfDays * POOL_PRICE;
+		if(sauna)
+			total += numberOfDays * SAUNA_PRICE;
+		
+		if(roomType.equals(Room.ONE_BED)){
+			total += numberOfDays * Room.ONE_BED_PRICE;
+		}else if(roomType.equals(Room.TWO_BED)){
+			total += numberOfDays * Room.TWO_BED_PRICE;
+		}else if(roomType.equals(Room.APARTMENT)){
+			total += numberOfDays * Room.APARTMENT_PRICE;
+		}
+		
+		
+		return total;
 	}
 	
 	public Bill copyBill(){

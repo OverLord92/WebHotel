@@ -57,7 +57,7 @@ public class User {
 	@OneToMany(mappedBy="username", fetch=FetchType.EAGER, cascade=CascadeType.ALL)
 	private List<Bill> bills = new ArrayList<>();
 	
-
+	private int totalAmountToPay;
 	
 	
 	public String getUsername() {
@@ -180,10 +180,31 @@ public class User {
 		this.bills = bills;
 	}
 
+	public int getTotalAmountToPay() {
+		return totalAmountToPay;
+	}
+
+	public void setTotalAmountToPay(int totalAmountToPay) {
+		this.totalAmountToPay = totalAmountToPay;
+	}
+
 	public Bill getLastBill(){
 		return this.bills.get(bills.size() - 1);
 	}
 
+	public void addToTotalAmount(int amount) {
+		totalAmountToPay += amount;
+	}
+	
+	public int calculateTotalAmountToPay(){
+		int total = 0;
+		
+		for(Bill bill: bills) {
+			total += bill.getTotal();
+		}
+		
+		return total;
+	}
 	@Override
 	public String toString() {
 		return "User [username=" + username + ", password=" + password + ", encodedPassword=" + encodedPassword
