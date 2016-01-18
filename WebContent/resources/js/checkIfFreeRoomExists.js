@@ -1,8 +1,5 @@
 $(document).ready(function(){
 		
-	
-	alert('roo m');
-	
 	$('#roomType').blur(function(){
 		doesFreeRoomExists();
 	});

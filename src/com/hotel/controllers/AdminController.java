@@ -95,7 +95,7 @@ public class AdminController {
 		user.setEnabled(true);
 		userDAO.createUser(user);
 		
-		return "admin";  //// kad stavim da vraca "admin" nor binding or plain target....
+		return "redirect:/admin";
 	}
 	
 	@RequestMapping("/approveRoomChange/{requestId}")
@@ -140,7 +140,7 @@ public class AdminController {
 		
 		userDAO.updateUser(user);
 		
-		return "home";
+		return "redirect:/admin";
 	}
 	
 	@RequestMapping("/approveServiceChange/{requestId}")
@@ -204,7 +204,8 @@ public class AdminController {
 		user.getBills().add(newBill);
 		userDAO.updateUser(user);
 		requestDAO.deleteRequest(request);
-		return "home";
+		
+		return "redirect:/admin";
 	}
 	
 	
@@ -234,12 +235,15 @@ public class AdminController {
 			userDAO.updateUser(user);
 		}
 		
-		return "home";
+		return "redirect:/admin";
 	}
 	
 	@RequestMapping(value = "searchUsers", method = RequestMethod.POST, consumes = "application/json", produces = "application/json")
 	public @ResponseBody Map<String, Object> addPostit(@RequestBody Map<String, Object> data){
 
+		
+		System.out.println("pozvana metoda za search");
+		
 		String username = (String)data.get("username");
 		String idNumber = (String)data.get("idNumber");
 		
@@ -247,6 +251,8 @@ public class AdminController {
 		
 		Map<String, Object> response = new HashMap<String, Object>();
 		response.put("users", filteredUsers);
+		
+		System.out.println(response);
 		return response;
 	}
 	

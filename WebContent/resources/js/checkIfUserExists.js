@@ -7,7 +7,6 @@ $(document).ready(function(){
 	
 	function doesUserExists(){
 		
-		alert("pozvan ajax");
 		var $idNumber = $('#idNumber').val();
 		
 		$.ajax({

@@ -23,6 +23,8 @@
 	src="<spring:url value="/resources/js/checkIfUserExists.js"/>"></script>
 <script type="text/javascript"
 	src="<spring:url value="/resources/js/checkIfFreeRoomExists.js"/>"></script>
+<script type="text/javascript"
+	src="<spring:url value="/resources/js/searchUsers.js"/>"></script>
 <script>
 	$(document).ready(function() {
 		$('#tabs').tabs();
@@ -134,21 +136,38 @@
 					<!-- print enabled users -->
 					<c:if test="${user.enabled == 'true'}">
 						<c:url value="/disableUser/${user.username}" var="disableUserUrl" />
-						<a href="${disableUserUrl}">disejblaj korisnika
+						<a href="${disableUserUrl}">disable user
 							${user.username}</a>
 					</c:if>
 					
 					<!-- print disabled users -->
 					<c:if test="${user.enabled == 'false'}">
 						<c:url value="/enableUser/${user.username}" var="enableUserUrl" />
-						<a href="${enableUserUrl}">enejblah korisnika ${user.username}</a>
+						<a href="${enableUserUrl}">enable user ${user.username}</a>
 					</c:if>
 					<br>
 				</c:forEach>
 			</div>
 			
 			<div id="searchUsers">
-			njesto
+			<label>by Username</label>
+			<input type="text" id="usernameSearch" /><br>
+			<label>by id number</label>
+			<input type="text" id="idNumberSearch" /><br>
+			<button id="search">Search users</button>
+			
+			<h1>Search Results:</h1>
+			<table id="filteredUsers" class="table table-hover">
+			<tr>
+				<th>Username</th>
+				<th>Check in Date</th>
+				<th>ID</th>
+				<th>Last name</th>
+				<th>Name</th>
+				<th>Room Number</th>
+				<th>Service ID</th>
+			</tr>
+			</table>
 			</div>
 
 		</div>
