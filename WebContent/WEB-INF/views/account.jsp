@@ -68,5 +68,68 @@
 					<input type="submit" id="submitServiceRequest" value="Send request" />
 			</form>
 	</div>
+	
+	<div class="container">
+	<h3>User Bills</h3>
+		<c:forEach items="${user.bills}" var="bill">
+			<table class="table table-hover">
+			<tr>
+			<th>Bill number</th>
+			<th>Start date</th>
+			<th>End date</th>
+			<th>Quantity</th>
+			<th>Gym</th>
+			<th>Cinema</th>
+			<th>Restaurant</th>
+			<th>Pool</th>
+			<th>Sauna</th>
+			</tr>
+			<tr>
+			<td>${bill.id}</td>
+			<td>${bill.startDate}</td>
+			<td>${bill.endDate}</td>
+			<td>${bill.numberOfDays}</td>
+			
+			<td>
+				
+				${bill.gym}
+			</td>
+			<td>	
+				${bill.cinema}
+			</td>
+			<td>
+				${bill.restaurant}
+			</td>
+			<td>
+				${bill.pool}
+			</td>
+			<td>
+				${bill.sauna}
+			</td>
+			</tr>
+			</table><br><br>
+		</c:forEach>
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 </body>
 </html>

@@ -73,7 +73,7 @@ public class UserController {
 		
 		requestDAO.createOrUpdateRequest(request);
 		
-		return "account";
+		return "redirect:/account";
 	}
 	
 	@RequestMapping(value="/requestServiceChange", method=RequestMethod.POST)
@@ -110,7 +110,7 @@ public class UserController {
 		
 		requestDAO.createOrUpdateRequest(request);
 		
-		return "account";
+		return "redirect:/account";
 	}
 
 }

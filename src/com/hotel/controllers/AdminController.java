@@ -24,6 +24,7 @@ import com.hotel.beans.UserRequest;
 import com.hotel.dao.RequestDAO;
 import com.hotel.dao.RoomDAO;
 import com.hotel.dao.UserDAO;
+import com.hotel.utility.UtilitiMethods;
 
 @Controller
 public class AdminController {
@@ -111,6 +112,8 @@ public class AdminController {
 		// prekini prosli racun
 		Bill oldBill = user.getLastBill();
 		oldBill.setEndDate(new Date());
+		int daysUsed = UtilitiMethods.getDateDiff(oldBill.getStartDate(), oldBill.getEndDate());
+		oldBill.setNumberOfDays(daysUsed);
 							
 		String requestedRoomType = request.getValue();
 		
@@ -156,6 +159,8 @@ public class AdminController {
 		// prekini prosli racun
 		Bill oldBill = user.getLastBill();
 		oldBill.setEndDate(new Date());
+		int daysUsed = UtilitiMethods.getDateDiff(oldBill.getStartDate(), oldBill.getEndDate()) + 1;
+		oldBill.setNumberOfDays(daysUsed);
 							
 		Services services = user.getServices();
 		Bill newBill = new Bill();
@@ -221,7 +226,8 @@ public class AdminController {
 		user.setEnabled(true);
 		
 		userDAO.updateUser(user);
-		return "home";
+		
+		return "redirect:/admin";
 	}
 	
 	@RequestMapping("/disableUser/{username}")
@@ -252,7 +258,6 @@ public class AdminController {
 		Map<String, Object> response = new HashMap<String, Object>();
 		response.put("users", filteredUsers);
 		
-		System.out.println(response);
 		return response;
 	}
 	

@@ -67,8 +67,6 @@ public class UserDAO {
 			 criteria.add(Restrictions.eq("idNumber", idNumber));
 		}
 
-		System.out.println(criteria.list().size());
-
 		return criteria.list();
 	}
 }

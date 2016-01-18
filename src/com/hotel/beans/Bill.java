@@ -18,6 +18,9 @@ public class Bill {
 	private Date startDate;
 	private Date endDate;
 	
+	// how long the services were used by the user
+	private int numberOfDays;
+	
 	@Column(columnDefinition="TINYINT(1)")
 	private boolean gym;
 	@Column(columnDefinition="TINYINT(1)")
@@ -66,6 +69,14 @@ public class Bill {
 
 	public void setEndDate(Date endDate) {
 		this.endDate = endDate;
+	}
+	
+	public int getNumberOfDays() {
+		return numberOfDays;
+	}
+
+	public void setNumberOfDays(int numberOfDays) {
+		this.numberOfDays = numberOfDays;
 	}
 
 	public boolean isGym() {

@@ -26,5 +26,5 @@ Poy senjinnn lets try merging forks!
 
 
 admin tab/ usrs izlistava korisnike 2 puta. treba provjeriti DONE
-provjeriti i enable/disable user
-pri odjavi korisnika treba osloboditi sobu
+provjeriti i enable/disable user DONE
+pri odjavi korisnika treba osloboditi sobu 
