@@ -1,33 +1,36 @@
 package com.hotel.beans;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
 @Table(name="user_requests")
 public class UserRequest {
 	
+	public static final String CHANGE_ROOM_TYP_REQUEST = "roomChange";
+	public static final String CHANGE_SERVICES_REQUEST = "serviceChange";
+	public static final String LOGOUT_REQUEST = "logOut";
+	public static final String CHARGE_REQUEST = "charge";
+	
 	@Id
 	@GeneratedValue(strategy=GenerationType.TABLE)
 	private int id;
 	
-	//tip requesta moze biti changeRoomType, reserveService i signOut
+	//type can be roomChange, serviceChange, logOut, charge
 	private String type;
 	
-	// ukoliko je request changeRoomType value moze biti novi tip sobe
-	// ako je request reserveService onda je value naziv servisa koji
-	// korisnik zeli rezervisati
+	// if the request type is roomChange - the value is the type of the requested room
+	// if the request type is charge - the value is the amount the user has to pay
 	private String value; 
 
+	// the user who created the request
 	private String username;
 	
-	
+	// when the request is created set the services that are required
 	@Column(columnDefinition="TINYINT(1)")
 	private boolean gym;
 	@Column(columnDefinition="TINYINT(1)")
@@ -41,7 +44,7 @@ public class UserRequest {
 
 	
 	
-	
+	// plain getters and setters
 	public int getId() {
 		return id;
 	}
@@ -74,8 +77,6 @@ public class UserRequest {
 		this.username = username;
 	}
 
-	
-	
 	public boolean isGym() {
 		return gym;
 	}
@@ -116,9 +117,13 @@ public class UserRequest {
 		this.sauna = sauna;
 	}
 
+	
 	@Override
 	public String toString() {
-		return "UserRequest [id=" + id + ", type=" + type + ", value=" + value + ", username=" + username + "]";
+		return "UserRequest [id=" + id 
+				+ ", type=" + type
+				+ ", value=" + value 
+				+ ", username=" + username + "]";
 	}
 	
 	

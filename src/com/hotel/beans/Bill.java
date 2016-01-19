@@ -8,9 +8,18 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
+/** Every user has a list property with Bill objects.
+ * 
+ * During registration the user gets an inital bill, 
+ * and then on every room or service change the admin
+ * approves the last bill and creates a new one.
+ * 
+ * At the sign out of the user the admin approves the 
+ * last bill and prepares them to charge the user. */
 @Entity
 public class Bill {
 	
+	// this contants are used to calculate bills
 	public static final int GYM_PRICE = 10;
 	public static final int CINEMA_PRICE = 10;
 	public static final int RESTAURANT_PRICE = 20;
@@ -20,13 +29,20 @@ public class Bill {
 	@Id @GeneratedValue(strategy=GenerationType.TABLE)
 	private int id;
 	
+	// username of the user to with the user belongs
 	private String username;
+	
+	// start and end date properties used to calculate
+	// the duration of the usage of the room and services
 	private Date startDate;
 	private Date endDate;
 	
-	// how long the services were used by the user
+	// how long the room and services were used by the user
 	private int numberOfDays;
 	
+	// if gym is true the user uses the gym,
+	// if cinema is true the user uses the cineman 
+	// and so on
 	@Column(columnDefinition="TINYINT(1)")
 	private boolean gym;
 	@Column(columnDefinition="TINYINT(1)")
@@ -38,8 +54,10 @@ public class Bill {
 	@Column(columnDefinition="TINYINT(1)")
 	private boolean sauna;
 	
+	// the room type used to calculate the cost of the room
 	private String roomType;
 	
+	// the total amount for this Bill object
 	private int total;
 	
 	@Column(columnDefinition="TINYINT(1)")
@@ -47,6 +65,7 @@ public class Bill {
 	
 	
 
+	// plain getters and setters
 	public static int getGymPrice() {
 		return GYM_PRICE;
 	}
@@ -171,9 +190,12 @@ public class Bill {
 		this.payed = payed;
 	}
 	
+	
+	/** Calculate the total amount of a Bill object */
 	public int calculateTotalForThisBill(){
 		int total = 0;
 		
+		// add cost of all used services
 		if(gym)
 		total += numberOfDays * GYM_PRICE;
 		if(cinema)
@@ -185,6 +207,7 @@ public class Bill {
 		if(sauna)
 			total += numberOfDays * SAUNA_PRICE;
 		
+		// add the cost of the room 
 		if(roomType.equals(Room.ONE_BED)){
 			total += numberOfDays * Room.ONE_BED_PRICE;
 		}else if(roomType.equals(Room.TWO_BED)){
@@ -197,6 +220,9 @@ public class Bill {
 		return total;
 	}
 	
+	/** Copy a bill object. Useful during change of room.
+	 * Use this method instead of setting all service property
+	 * values of the Bill object. */
 	public Bill copyBill(){
 		Bill copy = new Bill();
 		copy.username = this.username;

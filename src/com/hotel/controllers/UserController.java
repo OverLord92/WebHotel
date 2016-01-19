@@ -128,7 +128,6 @@ public class UserController {
 		
 		requestDAO.createOrUpdateRequest(request);
 
-		System.out.println("upalio signput");
 		return "redirect:/account";
 	}
 

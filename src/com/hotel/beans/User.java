@@ -22,6 +22,7 @@ public class User {
 	@Id
 	private String username;
 	
+	// holds the unencrypted password
 	@Transient
 	private String password; 
 	
@@ -31,7 +32,7 @@ public class User {
 	private String name;
 	private String lastName;
 	private String idNumber;
-	private Date dob; // date of birth
+	private Date dob;
 	private String gender;
 	
 	@OneToOne(cascade=CascadeType.ALL)
@@ -51,15 +52,13 @@ public class User {
 	private boolean enabled;
 	private String authority;
 	
-	// pri svakom koristenju servisa dodajemo novi bill u listu
-	// sto je jos bitnije u slucaju promjene sobe moramo naplatiti
-	// dotadasnji smjestaj u staroj sobi
 	@OneToMany(mappedBy="username", fetch=FetchType.EAGER, cascade=CascadeType.ALL)
 	private List<Bill> bills = new ArrayList<>();
 	
 	private int totalAmountToPay;
 	
 	
+	// plain getters and setters
 	public String getUsername() {
 		return username;
 	}
@@ -192,25 +191,28 @@ public class User {
 		return this.bills.get(bills.size() - 1);
 	}
 
+	/** After admin approves a bill this method adds  the 
+	 * total amount of the bill to the users total */
 	public void addToTotalAmount(int amount) {
 		totalAmountToPay += amount;
 	}
 	
-	public int calculateTotalAmountToPay(){
-		int total = 0;
-		
-		for(Bill bill: bills) {
-			total += bill.getTotal();
-		}
-		
-		return total;
-	}
+	
 	@Override
 	public String toString() {
-		return "User [username=" + username + ", password=" + password + ", encodedPassword=" + encodedPassword
-				+ ", name=" + name + ", lastName=" + lastName + ", idNumber=" + idNumber + ", dob=" + dob + ", gender="
-				+ gender + ", room=" + room + ", checkInDate=" + checkInDate + ", online=" + online + ", enabled="
-				+ enabled + ", authority=" + authority + "]";
+		return "User [username=" + username 
+				+ ", password=" + password 
+				+ ", encodedPassword=" + encodedPassword
+				+ ", name=" + name 
+				+ ", lastName=" + lastName 
+				+ ", idNumber=" + idNumber 
+				+ ", dob=" + dob
+				+ ", gender=" + gender 
+				+ ", room=" + room 
+				+ ", checkInDate=" + checkInDate
+				+ ", online=" + online 
+				+ ", enabled=" + enabled 
+				+ ", authority=" + authority + "]";
 	}
 	
 	

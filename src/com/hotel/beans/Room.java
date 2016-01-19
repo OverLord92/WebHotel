@@ -7,10 +7,12 @@ import javax.persistence.Id;
 @Entity
 public class Room {
 	
+	// constant room type names
 	public static final String ONE_BED = "one";
 	public static final String TWO_BED = "two";
 	public static final String APARTMENT = "apartment";
 	
+	// constant room prices
 	public static final int ONE_BED_PRICE = 20;
 	public static final int TWO_BED_PRICE = 40;
 	public static final int APARTMENT_PRICE = 60;
@@ -26,7 +28,7 @@ public class Room {
 	private int roomPrice;
 	
 	
-
+	// plain getter and setters
 	public int getRoomNumber() {
 		return roomNumber;
 	}
@@ -59,10 +61,13 @@ public class Room {
 		this.roomPrice = roomPrice;
 	}
 
+	
 	@Override
 	public String toString() {
-		return "Room [roomNumber=" + roomNumber + ", roomType=" + roomType + ", occupied=" + occupied + ", roomPrice="
-				+ roomPrice + "]";
+		return "Room [roomNumber=" + roomNumber + 
+				", roomType=" + roomType + 
+				", occupied=" + occupied + ", "
+				+ "roomPrice=" + roomPrice + "]";
 	}
 	
 	
