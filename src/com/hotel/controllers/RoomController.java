@@ -19,6 +19,7 @@ public class RoomController {
 	@Autowired
 	RoomDAO roomDAO;
 	
+	/** Called with AJAX to check if a room of certain type is available */
 	@RequestMapping(value = "checkIfFreeRoomExists", method = RequestMethod.POST, consumes = "application/json", produces = "application/json")
 	public @ResponseBody Map<String, Object> addPostit(@RequestBody Map<String, Object> data){
 

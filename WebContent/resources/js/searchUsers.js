@@ -1,7 +1,8 @@
 $(document).ready(function(){
 	
-	$('#search').click(function(){
 	
+	$('#search').click(function(){
+
 		var $usernameSearch = $('#usernameSearch').val();
 		var $idNumberSearch = $('#idNumberSearch').val();
 		
@@ -30,13 +31,21 @@ $(document).ready(function(){
 		var user;
 		for(var i = 0; i < users.length; i++){
 			user = users[i];
+
+			var usersRoomNumber;
+			if(user.room != null){
+				usersRoomNumber = user.room.roomNumber
+			}else{
+				usersRoomNumber = 'no room';
+			}
+			
 			$('#filteredUsers').append('<tr>' +
 					'<td>' + user.username + '</td>' +
 					'<td>' + user.checkInDate+ '</td>' +
 					'<td>' + user.idNumber + '</td>' +
 					'<td>' + user.name + '</td>' +
 					'<td>' + user.lastName + '</td>' +
-					'<td>' + user.room.roomNumber + '</td>' +
+					'<td>' + usersRoomNumber + '</td>' +
 					'<td>' + user.services.id + '</td>' +
 					'</tr>')
 		}

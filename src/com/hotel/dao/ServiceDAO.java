@@ -21,15 +21,18 @@ public class ServiceDAO {
 		return sessionFactory.getCurrentSession();
 	}
 	
+	/** Saves a Services object to the database */
+	public void createService(com.hotel.beans.Services service) {
+		session().save(service);
+	}
+	
+	/** Return a list of all Services objects from the database */
 	@SuppressWarnings("unchecked")
 	public List<com.hotel.beans.Services> getAllServices(){
 		Criteria criteria = session().createCriteria(com.hotel.beans.Services.class);
 		return criteria.list();
 	}
 
-	public void createService(com.hotel.beans.Services service) {
-		session().save(service);
-	}
 	
 	
 }

@@ -225,6 +225,8 @@ public class Bill {
 	 * values of the Bill object. */
 	public Bill copyBill(){
 		Bill copy = new Bill();
+		copy.setTotal(0);
+		
 		copy.username = this.username;
 		copy.gym = this.gym;
 		copy.cinema = this.cinema;

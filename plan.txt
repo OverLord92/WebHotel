@@ -24,8 +24,3 @@ DONE - klasa bill: username, startDate, endDate, sve boolean
 	services i roomType, payed
 
 Poy senjinnn lets try merging forks!
-
-
-admin tab/ usrs izlistava korisnike 2 puta. treba provjeriti DONE
-provjeriti i enable/disable user DONE
-pri odjavi korisnika treba osloboditi sobu 

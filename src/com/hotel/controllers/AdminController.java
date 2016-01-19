@@ -1,5 +1,6 @@
 package com.hotel.controllers;
 
+import java.text.ParseException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -38,110 +39,132 @@ public class AdminController {
 	@Autowired
 	RequestDAO requestDAO;
 
+	/** Adds required model attributes and shows the admin page. */
 	@RequestMapping("/admin")
 	public String showAdminMenu(Model model){
+		
 		model.addAttribute("user", new User());
 		model.addAttribute("requests", requestDAO.getAllRequests());
 		model.addAttribute("users", userDAO.getAllUsers());
-		System.out.println("number of users is:" + userDAO.getAllUsers().size());
+		
 		return "admin";
 	}
 	
+	/** Takes data from the user registration form, create a user and
+	 * saves her/him to the database. */
 	@RequestMapping(value="/registerUser", method=RequestMethod.POST)
 	public String registerUser(User user, HttpServletRequest request) {
 		
+		// set users room and set the room to occupied
 		int roomNumber = Integer.parseInt(request.getParameter("roomNumber"));   
 		Room room = roomDAO.getRoom(roomNumber);
-		user.setRoom(room);
 		room.setOccupied(true);
 		
-		Services services = new Services();
+		user.setRoom(room);
+		
+		// Create an initial bill for the user
 		Bill bill = new Bill();
 		bill.setUsername(user.getUsername());
 		bill.setRoomType(room.getRoomType());
 		bill.setStartDate(new Date());
 		
+		// create a servies object for the user
+		Services services = new Services();
+		
+		// set the bill and services properties based 
+		// on the form information
 		String gym = request.getParameter("gym");
 		if(gym != null) {
 			services.setGym(true);
 			bill.setGym(true);
 		}
-		
 		String cinema = request.getParameter("cinema");
 		if(cinema != null) {
 			services.setCinema(true);
 			bill.setCinema(true);
 		}
-		
 		String restaurant = request.getParameter("restaurant");
 		if(restaurant != null) {
 			services.setRestaurant(true);
 			bill.setRestaurant(true);
 		}
-		
 		String pool = request.getParameter("pool");
 		if(pool != null) {
 			services.setPool(true);
 			bill.setPool(true);
 		}
-		
 		String sauna = request.getParameter("sauna");
 		if(sauna != null) {
 			services.setSauna(true);
 			bill.setSauna(true);
 		}
 		
-		System.out.println(services);
+		// set users services and add the bill to the user
 		user.setServices(services);
 		user.getBills().add(bill);
+		
+		// enable user
 		user.setEnabled(true);
-		userDAO.createUser(user);
+		
+		// if the user is in the archive just update user object
+		userDAO.createOrUpdateUser(user);
 		
 		return "redirect:/admin";
 	}
 	
+	/** Handles admin approval of users roomChange requests */
 	@RequestMapping("/approveRoomChange/{requestId}")
 	public String changeUserRoom(@PathVariable Integer requestId){
 	
-		System.out.println(requestId);
+		// get the request from the database
 		UserRequest request = requestDAO.getRequest(requestId);
-
-		String username = request.getUsername();
-		User user = userDAO.getUser(username);
 		
+		User user = userDAO.getUser(request.getUsername());
 		
-		// prekini prosli racun
-		Bill oldBill = user.getLastBill();
-		oldBill.setEndDate(new Date());
-		int daysUsed = UtilitiMethods.getDateDiff(oldBill.getStartDate(), oldBill.getEndDate()) + 1;
-		oldBill.setNumberOfDays(daysUsed);
-		int total = oldBill.calculateTotalForThisBill();
-		oldBill.setTotal(total);
-		user.addToTotalAmount(total);
-							
 		String requestedRoomType = request.getValue();
-		
-		// promjeni sobu
 		Room oldRoom = user.getRoom();
 		Room newRoom = roomDAO.getRoomOfCertainType(requestedRoomType);
 		
-		if(newRoom !=null) {
-			oldRoom.setOccupied(false);
-			roomDAO.updateRoom(oldRoom);
-			oldRoom = null;
-			
-			newRoom.setOccupied(true);
-			roomDAO.updateRoom(newRoom);
-			user.setRoom(newRoom);
-			newRoom.setOccupied(true);
-			
-			requestDAO.deleteRequest(request);
-		}
+		// if between the making of the request and approval all
+		// rooms of the requested type got occupied don't make any changes
+		if(newRoom == null)
+			return "redirect:/admin";
 		
-		// napravi novi racun sa izmjenama
+		// if a room is available continue
+		
+		// end the last bill
+		Bill oldBill = user.getLastBill();
+		oldBill.setEndDate(new Date());
+		
+		int daysUsed = UtilitiMethods.getDateDiff(oldBill.getStartDate(), oldBill.getEndDate()) + 1;
+		oldBill.setNumberOfDays(daysUsed);
+		
+		int total = oldBill.calculateTotalForThisBill();
+		oldBill.setTotal(total);
+		
+		// add the total amount of the last bill to users totalAmountToPay
+		user.addToTotalAmount(total);
+							
+		// free users old room
+		oldRoom.setOccupied(false);
+		roomDAO.updateRoom(oldRoom);
+		oldRoom = null;
+			
+		// occupy new room
+		newRoom.setOccupied(true);
+		roomDAO.updateRoom(newRoom);
+		user.setRoom(newRoom);
+		newRoom.setOccupied(true);
+			
+		// delete the users request after room change
+		requestDAO.deleteRequest(request);
+		
+		// create a new bill by copying the old one and
+		// change the room type
 		Bill newBill = oldBill.copyBill();
 		newBill.setRoomType(newRoom.getRoomType());
 		newBill.setStartDate(new Date());
+		// add new bill to user
 		user.getBills().add(newBill);
 		
 		userDAO.updateUser(user);
@@ -149,6 +172,7 @@ public class AdminController {
 		return "redirect:/admin";
 	}
 	
+	/** Handles admin approval of users roomChange requests */
 	@RequestMapping("/approveServiceChange/{requestId}")
 	public String changeUserService(@PathVariable Integer requestId){
 	
@@ -158,21 +182,26 @@ public class AdminController {
 		User user = userDAO.getUser(username);
 		Room room = user.getRoom();
 		
-		// prekini prosli racun
+		// end last bill
 		Bill oldBill = user.getLastBill();
 		oldBill.setEndDate(new Date());
+		// set the quantity (how much days the user used the room and/or services
 		int daysUsed = UtilitiMethods.getDateDiff(oldBill.getStartDate(), oldBill.getEndDate()) + 1;
 		oldBill.setNumberOfDays(daysUsed);
+		// calculate the bill total
 		int total = oldBill.calculateTotalForThisBill();
 		oldBill.setTotal(total);
+		
+		// add the bill total to users amountToPay
 		user.addToTotalAmount(total);
 							
-		Services services = user.getServices();
+		// create a new bill
 		Bill newBill = new Bill();
 		newBill.setUsername(user.getUsername());
 		newBill.setRoomType(room.getRoomType());
 		newBill.setStartDate(new Date());
 		
+		Services services = user.getServices();
 		
 		if(request.isGym()) {
 			services.setGym(true);
@@ -217,6 +246,7 @@ public class AdminController {
 		return "redirect:/admin";
 	}
 	
+	/** Handles user request for logout */
 	@RequestMapping("/approveLogOut/{requestId}")
 	public String logOutUser(@PathVariable Integer requestId){
 		UserRequest request = requestDAO.getRequest(requestId);
@@ -224,22 +254,29 @@ public class AdminController {
 		String username = request.getUsername();
 		User user = userDAO.getUser(username);
 		
+		// end last bill
 		Bill lastBill = user.getLastBill();
 		lastBill.setEndDate(new Date());
 		user.addToTotalAmount(lastBill.calculateTotalForThisBill());
 		
+		// free room
 		Room room = user.getRoom();
 		room.setOccupied(false);
 		roomDAO.updateRoom(room);
 		
+		// update user
 		user.setRoom(null);
-		userDAO.updateUser(user);		
-		request.setType("charge");
+		userDAO.updateUser(user);	
+		
+		// update the request type
+		request.setType(UserRequest.CHARGE_REQUEST);
 		request.setValue(user.getTotalAmountToPay() + "");
 		requestDAO.updateRequest(request);
+		
 		return "redirect:/admin";
 	}
 	
+	/** Handles user request for paying */
 	@RequestMapping("/charge/{requestId}")
 	public String chargeAndDisableUser(@PathVariable Integer requestId){
 		UserRequest request = requestDAO.getRequest(requestId);
@@ -254,7 +291,7 @@ public class AdminController {
 		return "redirect:/admin";
 	}
 	
-	
+	/** Enables a user */
 	@RequestMapping("/enableUser/{username}")
 	public String enableUser(@PathVariable String username){
 		
@@ -266,11 +303,13 @@ public class AdminController {
 		return "redirect:/admin";
 	}
 	
+	/** Disables a user */
 	@RequestMapping("/disableUser/{username}")
 	public String disableUser(@PathVariable String username){
 		
 		User user = userDAO.getUser(username);
 		
+		// user cannot be disabled if his/her room isn't null
 		if(user.getRoom() == null){
 			user.setEnabled(false);
 			userDAO.updateUser(user);
@@ -279,8 +318,23 @@ public class AdminController {
 		return "redirect:/admin";
 	}
 	
+	
+	/** Called using AJAX to check if the user is in the archive */
+	@RequestMapping(value = "checkIfUserExists", method = RequestMethod.POST, consumes = "application/json", produces = "application/json")
+	public @ResponseBody Map<String, Object> checkIfUserExistsInTheDatabase(@RequestBody Map<String, Object> data) throws ParseException {
+
+		String idNumber = (String) data.get("idNumber");
+
+		User user = userDAO.getUserById(idNumber);
+
+		Map<String, Object> response = new HashMap<String, Object>();
+		response.put("user", user);
+		return response;
+	}
+	
+	/** Called using AJAX to search the database for user in the database */
 	@RequestMapping(value = "searchUsers", method = RequestMethod.POST, consumes = "application/json", produces = "application/json")
-	public @ResponseBody Map<String, Object> addPostit(@RequestBody Map<String, Object> data){
+	public @ResponseBody Map<String, Object> searchUsersInDatabase(@RequestBody Map<String, Object> data){
 
 		String username = (String)data.get("username");
 		String idNumber = (String)data.get("idNumber");

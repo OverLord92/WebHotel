@@ -24,30 +24,38 @@ public class RequestDAO {
 		return sessionFactory.getCurrentSession();
 	}
 	
-	public void createRequest(UserRequest request){
+	/** Saves the UserRequest object to the database */
+	public void saveRequest(UserRequest request){
 		session().save(request);
 	}
 	
+	/** Gets a UserRequest object with certain id from database */
+	public UserRequest getRequest(int requestId) {
+		return (UserRequest)session().get(UserRequest.class, requestId);
+	}
+	
+	/** Updates the UserRequest object in the database */
 	public void updateRequest(UserRequest request){
 		session().update(request);
 	}
 	
+	/** Deletes the UserRequest object from the database */
+	public void deleteRequest(UserRequest request) {
+		session().delete(request);
+	}
+	
+	/** Returns a list with all UserRequest objects from the database */
 	@SuppressWarnings("unchecked")
 	public List<UserRequest> getAllRequests(){
 		Criteria criteria = session().createCriteria(UserRequest.class);
 		return criteria.list();
 	}
 
-	public UserRequest getRequest(int requestId) {
-		return (UserRequest)session().get(UserRequest.class, requestId);
-	}
-
-	public void deleteRequest(UserRequest request) {
-		session().delete(request);
-	}
 	
-	/** Provjeri da li je korisnik vec trazio mjenjanje tipa sobe */
+	/** Returns a users roomChange UserRequest from the database.
+	 * Returns null if no roomChange UserRequest of the user is present.  */
 	public UserRequest doesRoomChangeRequestAllreadyExists(String username){
+		
 		Criteria criteria = session().createCriteria(UserRequest.class);
 		criteria.add(Restrictions.eq("username", username));
 		criteria.add(Restrictions.eq("type", "roomChange"));
@@ -55,7 +63,8 @@ public class RequestDAO {
 		return (UserRequest)criteria.uniqueResult();
 	}
 	
-	/** provjeri da li je korisnik vec zahtjevao mjenjanje servisa */
+	/** Returns a users serviceChange UserRequest from the database.
+	 * Returns null if no serviceChange UserRequest of the user is present.  */
 	public UserRequest doesServiceChangeRequestAllreadyExists(String username){
 		Criteria criteria = session().createCriteria(UserRequest.class);
 		criteria.add(Restrictions.eq("username", username));
@@ -64,16 +73,18 @@ public class RequestDAO {
 		return (UserRequest)criteria.uniqueResult();
 	}
 
-	public void createOrUpdateRequest(UserRequest request) {
-		session().saveOrUpdate(request);
-	}
-
+	/** Returns a users logOut UserRequest from the database.
+	 * Returns null if no logOut UserRequest of the user is present.  */
 	public UserRequest doesLogOutRequestAllreadyExists(String username) {
 		Criteria criteria = session().createCriteria(UserRequest.class);
 		criteria.add(Restrictions.eq("username", username));
 		criteria.add(Restrictions.eq("type", "logOut"));
 		
 		return (UserRequest)criteria.uniqueResult();
+	}
+	
+	public void createOrUpdateRequest(UserRequest request) {
+		session().saveOrUpdate(request);
 	}
 
 }

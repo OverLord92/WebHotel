@@ -11,7 +11,7 @@ import javax.persistence.Table;
 @Table(name="user_requests")
 public class UserRequest {
 	
-	public static final String CHANGE_ROOM_TYP_REQUEST = "roomChange";
+	public static final String CHANGE_ROOM_TYPE_REQUEST = "roomChange";
 	public static final String CHANGE_SERVICES_REQUEST = "serviceChange";
 	public static final String LOGOUT_REQUEST = "logOut";
 	public static final String CHARGE_REQUEST = "charge";

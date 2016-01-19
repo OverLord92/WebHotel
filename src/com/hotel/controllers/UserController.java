@@ -1,19 +1,14 @@
 package com.hotel.controllers;
 
 import java.security.Principal;
-import java.text.ParseException;
-import java.util.HashMap;
-import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.hotel.beans.User;
 import com.hotel.beans.UserRequest;
@@ -29,6 +24,7 @@ public class UserController {
 	@Autowired
 	RequestDAO requestDAO;
 
+	/** Used to present the account page. */
 	@RequestMapping("/account")
 	public String showUserAcccount(Model model, Principal principal) {
 
@@ -38,57 +34,52 @@ public class UserController {
 		return "account";
 	}
 
-	@RequestMapping(value = "checkIfUserExists", method = RequestMethod.POST, consumes = "application/json", produces = "application/json")
-	public @ResponseBody Map<String, Object> addPostit(@RequestBody Map<String, Object> data) throws ParseException {
-
-		System.out.println("pozvana kontroler metoda");
-		String idNumber = (String) data.get("idNumber");
-
-		User user = userDAO.getUserById(idNumber);
-
-		Map<String, Object> response = new HashMap<String, Object>();
-		response.put("user", user);
-		return response;
-	}
-
+	/** Creates a UserRequest for roomChange. Saves it to the database and hands it over
+	 * to the admin for approval. */
 	@RequestMapping(value = "/requestRoomChange", method = RequestMethod.POST)
 	public String requestRoomChange(HttpServletRequest servletRequest, Principal principal) {
 
 		String username = principal.getName();
 		String roomType = servletRequest.getParameter("roomType");
 
+		// check if there is a pending user request for roomChange
 		UserRequest request = requestDAO.doesRoomChangeRequestAllreadyExists(username);
 
-		if (request == null) {
+		// if there isn't a pending one create a new request
+		if (request == null) 
 			request = new UserRequest();
-		}
+		
 
 		request.setUsername(username);
-		request.setType("roomChange");
+		request.setType(UserRequest.CHANGE_ROOM_TYPE_REQUEST);
 		request.setValue(roomType);
 
+		// if there was a pending request for services update it
+		// if there wasn't a request, save it to the database 
 		requestDAO.createOrUpdateRequest(request);
 
 		return "redirect:/account";
 	}
 
+	/** Creates a UserRequest for servicesChange. Saves it to the database and hands it over
+	 * to the admin for approval. */
 	@RequestMapping(value = "/requestServiceChange", method = RequestMethod.POST)
 	public String requestServiceChange(HttpServletRequest servletRequest, Principal principal) {
 
 		String username = principal.getName();
 
-		// provjeri da li vec postoji rekvest
+		// check if there is a pending user request for serviceChange
 		UserRequest request = requestDAO.doesServiceChangeRequestAllreadyExists(username);
-		System.out.println(request);
 
-		// ako ne postoji napravi novi rekvest
-		if (request == null) {
+		// if there isn't a pending one create a new request
+		if (request == null) 
 			request = new UserRequest();
-		}
+		
 
 		request.setUsername(username);
-		request.setType("serviceChange");
+		request.setType(UserRequest.CHANGE_SERVICES_REQUEST);
 
+		// set the requested services 
 		String gym = servletRequest.getParameter("gym");
 		request.setGym(gym != null ? true : false);
 
@@ -104,28 +95,33 @@ public class UserController {
 		String sauna = servletRequest.getParameter("sauna");
 		request.setSauna(sauna != null ? true : false);
 
+		// if there was a pending request for services update it
+		// if there wasn't a request, save it to the database 
 		requestDAO.createOrUpdateRequest(request);
 
 		return "redirect:/account";
 	}
 
+	/** Creates a UserRequest for logout. Saves it to the database and hands it over
+	 * to the admin for approval. */
 	@RequestMapping(value = "/requestLogOut", method = RequestMethod.POST)
 	public String requestLogOut(Principal principal) {
 
 		String username = principal.getName();
 		
-		// provjeri da li vec postoji rekvest
+		// check if there is a pending user request for logout
 		UserRequest request = requestDAO.doesLogOutRequestAllreadyExists(username);
-		System.out.println(request);
-
-		// ako ne postoji napravi novi rekvest
-		if (request == null) {
+	
+		// if there isn't a pending one create a new request
+		if (request == null) 
 			request = new UserRequest();
-		}
+		
 		
 		request.setUsername(username);
-		request.setType("logOut");
+		request.setType(UserRequest.LOGOUT_REQUEST);
 		
+		// if there was a pending request for logout update it
+		// if there wasn't a request, save it to the database 
 		requestDAO.createOrUpdateRequest(request);
 
 		return "redirect:/account";

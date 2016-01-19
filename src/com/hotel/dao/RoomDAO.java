@@ -1,5 +1,7 @@
 package com.hotel.dao;
 
+import java.util.List;
+
 import javax.transaction.Transactional;
 
 import org.hibernate.Criteria;
@@ -22,28 +24,32 @@ public class RoomDAO {
 		return sessionFactory.getCurrentSession();
 	}
 	
+	/** Retrieve the room with certain roomNuber from the database */
+	public Room getRoom(int roomNumber) {
+		return (Room)session().get(Room.class, roomNumber);
+	}
+	
+	/** Update the room in the database */
+	public void updateRoom(Room room) {
+		session().update(room);
+	}
+	
+	/** Return a non occupied room of certain type from the database */
 	public Room getRoomOfCertainType(String roomType){
 		
 		Criteria criteria = session().createCriteria(Room.class);
 		criteria.add(Restrictions.eq("occupied", false));
 		criteria.add(Restrictions.eq("roomType", roomType));
 	
-		Room room = (Room)criteria.list().get(0); // treba hendlati nullpointer
-	
-		System.out.println(room);
+		@SuppressWarnings("unchecked")
+		List<Room> availableRooms = criteria.list();
 		
-		if(room != null) {
-			return room;
-		} else {
-			return null;
-		}
+		Room room = null;
+		
+		if(availableRooms != null && availableRooms.size() > 0)
+			room = (Room)criteria.list().get(0); 
+	
+		return room;
 	}
 
-	public Room getRoom(int roomNumber) {
-		return (Room)session().get(Room.class, roomNumber);
-	}
-
-	public void updateRoom(Room room) {
-		session().update(room);
-	}
 }
