@@ -17,7 +17,7 @@ public class UserRequest {
 	public static final String CHARGE_REQUEST = "charge";
 	
 	@Id
-	@GeneratedValue(strategy=GenerationType.TABLE)
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private int id;
 	
 	//type can be roomChange, serviceChange, logOut, charge

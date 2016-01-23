@@ -23,4 +23,12 @@ DONE - napraviti tab search u kojem admin moze pretraziati korisnike
 DONE - klasa bill: username, startDate, endDate, sve boolean 
 	services i roomType, payed
 
+Ostalo da se uradi: 
+- rjesiti login za admina
+- umjesto eager staviti lazy fetching
+- premjestiti logiku iz controller-a u service layer
+- fron end
+
 Poy senjinnn lets try merging forks!
+
+

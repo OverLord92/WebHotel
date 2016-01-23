@@ -13,7 +13,7 @@ import javax.persistence.Id;
 @Entity
 public class Services {
 	
-	@Id @GeneratedValue(strategy=GenerationType.TABLE)
+	@Id @GeneratedValue(strategy=GenerationType.IDENTITY)
 	private int id;
 	
 	// this constants are used to calculate bills

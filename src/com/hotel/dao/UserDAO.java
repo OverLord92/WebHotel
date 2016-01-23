@@ -90,12 +90,10 @@ public class UserDAO {
 	@SuppressWarnings("unchecked")
 	public List<User> searchUsers(String username, String idNumber) {
 		
-		System.out.println("search metho called");
-		
 		// check if users username contains the forwarded username
 		Criteria criteria = session().createCriteria(User.class);
 		
-		// this line prevents criteria from returning instances multiple time
+		// this line prevents criteria from returning instances multiple times
 		// eager fetch causes this issue
 		criteria.setResultTransformer(DistinctRootEntityResultTransformer.INSTANCE);
 		

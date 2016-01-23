@@ -19,14 +19,14 @@ import javax.persistence.Id;
 @Entity
 public class Bill {
 	
-	// this contants are used to calculate bills
+	// this constants are used to calculate bills
 	public static final int GYM_PRICE = 10;
 	public static final int CINEMA_PRICE = 10;
 	public static final int RESTAURANT_PRICE = 20;
 	public static final int POOL_PRICE = 10;
 	public static final int SAUNA_PRICE = 10;
 
-	@Id @GeneratedValue(strategy=GenerationType.TABLE)
+	@Id @GeneratedValue(strategy=GenerationType.IDENTITY)
 	private int id;
 	
 	// username of the user to with the user belongs

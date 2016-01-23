@@ -44,7 +44,9 @@ public class AdminController {
 	public String showAdminMenu(Model model){
 		
 		model.addAttribute("user", new User());
+		System.out.println(1);
 		model.addAttribute("requests", requestDAO.getAllRequests());
+		System.out.println(2);
 		model.addAttribute("users", userDAO.getAllUsers());
 		
 		return "admin";
